@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notropia Decision Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --dark: #080c14;
+    --dark-mid: #0d1421;
+    --dark-surface: #111827;
+    --blue-deep: #0f2d5e;
+    --blue-mid: #1a4a8a;
+    --blue-glow: #2563b8;
+    --blue-light: #4a90d9;
+    --accent: #c9a84c;
+    --accent-light: #e8c97a;
+    --text-primary: #f0ece4;
+    --text-secondary: #9ba8bb;
+    --text-muted: #4a5568;
+    --border: rgba(255,255,255,0.07);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--text-primary);
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(8,12,20,0.95), transparent);
+  }
+
+  .nav-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+
+  .nav-brand span {
+    color: var(--accent);
+    font-style: italic;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--text-primary); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 15% 70%, rgba(15,45,94,0.5) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 85% 20%, rgba(26,74,138,0.2) 0%, transparent 60%);
+  }
+
+  .hero-grain {
+    position: absolute;
+    inset: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  }
+
+  .hero-content {
+    position: relative;
+    max-width: 780px;
+    animation: fadeUp 1.2s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 2rem;
+  }
+
+  .hero-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+    color: var(--text-primary);
+  }
+
+  .hero-headline em {
+    font-style: italic;
+    color: var(--accent-light);
+  }
+
+  .hero-sub {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    max-width: 540px;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    padding: 0.9rem 2.5rem;
+    border: 1px solid rgba(201,168,76,0.5);
+    color: var(--accent-light);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    background: transparent;
+  }
+
+  .hero-cta:hover {
+    background: rgba(201,168,76,0.08);
+    border-color: var(--accent);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 3rem;
+    left: 4rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .hero-scroll::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--text-muted);
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 7rem 4rem;
+    position: relative;
+  }
+
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+
+  .section-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 300;
+    line-height: 1.2;
+    max-width: 700px;
+    margin-bottom: 2.5rem;
+  }
+
+  .section-headline em {
+    font-style: italic;
+    color: var(--accent-light);
+  }
+
+  /* PLATFORM SECTION */
+  .platform {
+    background: var(--dark-mid);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .platform-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-top: 4rem;
+  }
+
+  .platform-col h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+  }
+
+  .platform-col .col-sub {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+  }
+
+  .platform-item {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .platform-item:last-child { border-bottom: none; }
+
+  .platform-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.5rem;
+  }
+
+  .platform-item-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+  }
+
+  .platform-item-greek {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--accent);
+    opacity: 0.7;
+  }
+
+  .platform-item-status {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.7rem;
+    border: 1px solid;
+  }
+
+  .status-live {
+    color: #5a9e7a;
+    border-color: rgba(90,158,122,0.4);
+  }
+
+  .status-next {
+    color: var(--text-muted);
+    border-color: rgba(74,85,104,0.4);
+  }
+
+  .platform-item p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  /* PULLQUOTE */
+  .pullquote-section {
+    text-align: center;
+    padding: 6rem 4rem;
+  }
+
+  .pullquote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 3vw, 2.4rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.5;
+    max-width: 820px;
+    margin: 0 auto 2rem;
+    color: var(--text-primary);
+  }
+
+  .pullquote-attr {
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* DIFFERENTIATOR */
+  .diff-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 4rem;
+  }
+
+  .diff-card {
+    padding: 2.5rem 2rem;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.015);
+    transition: border-color 0.3s;
+  }
+
+  .diff-card:hover {
+    border-color: rgba(201,168,76,0.2);
+  }
+
+  .diff-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 300;
+    color: rgba(201,168,76,0.15);
+    line-height: 1;
+    margin-bottom: 1.5rem;
+  }
+
+  .diff-card h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+  }
+
+  .diff-card p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+
+  /* CTA SECTION */
+  .cta-section {
+    text-align: center;
+    background: var(--dark-mid);
+    border-top: 1px solid var(--border);
+  }
+
+  .cta-section .section-headline {
+    margin: 0 auto 1.5rem;
+    text-align: center;
+  }
+
+  .cta-sub {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    max-width: 500px;
+    margin: 0 auto 3rem;
+    line-height: 1.8;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 3rem 4rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--text-muted);
+  }
+
+  .footer-tagline {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .footer-right {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* DIVIDER */
+  .divider {
+    width: 60px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.4;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 1.5rem 2rem; }
+    .nav-links { display: none; }
+    section, .hero { padding: 5rem 2rem; }
+    .platform-grid, .diff-grid { grid-template-columns: 1fr; gap: 2rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="home.html" class="nav-brand">Notropia <span>Decision Intelligence</span></a>
+  <ul class="nav-links">
+    <li><a href="krisis.html">Krisis</a></li>
+    <li><a href="nms.html">Mindset System</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="founder.html">Founder</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Notropia Decision Intelligence — Active Pilot</p>
+    <h1 class="hero-headline">
+      Lead with intention.<br>
+      <em>Not inheritance.</em>
+    </h1>
+    <p class="hero-sub">
+      You have been in the meeting where something felt slightly off — and the decision got made anyway. That moment is where Notropia lives.
+    </p>
+    <a href="https://calendly.com/notropiarsm/30min" target="_blank" class="hero-cta">Request a Conversation</a>
+  </div>
+  <p class="hero-scroll">Scroll to explore</p>
+</section>
+
+<section>
+  <p class="section-label">The Foundation</p>
+  <div class="divider"></div>
+  <h2 class="section-headline">
+    One system. Built around the<br>
+    <em>Notropia Mindset System.</em>
+  </h2>
+  <p style="max-width: 620px; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.9;">
+    Every leader carries a distinct way of thinking — a profile of how they process complexity, where they move fast, where they slow down, and what their blind spots look like under pressure. The Notropia Mindset System maps that profile. Everything else runs on it.
+  </p>
+</section>
+
+<section class="platform">
+  <p class="section-label">The Platform</p>
+  <div class="divider"></div>
+  <h2 class="section-headline">Two entry points.<br><em>One coherent system.</em></h2>
+
+  <div class="platform-grid">
+    <div class="platform-col">
+      <h3>Individual</h3>
+      <p class="col-sub">Live Now — Active Pilot</p>
+
+      <div class="platform-item">
+        <div class="platform-item-header">
+          <span class="platform-item-name">Krisis <span class="platform-item-greek">κρίσις</span></span>
+          <span class="platform-item-status status-live">Live</span>
+        </div>
+        <p>The dual-agent decision intelligence system. Emma thinks with you in the moment. Sarah watches how you decide across time. Together they do what no stateless AI can do — remember how you decide, and use that memory to change how you show up next time.</p>
+      </div>
+
+      <div class="platform-item">
+        <div class="platform-item-header">
+          <span class="platform-item-name">Notropia Mindset System <span class="platform-item-greek">νοοτροπία</span></span>
+          <span class="platform-item-status status-live">Live</span>
+        </div>
+        <p>The diagnostic foundation. Six mindsets. A Wheel that maps how you think, where you lead, and what your shadow does when pressure builds. Sarah builds your profile. Emma is already calibrated to it before the first conversation begins.</p>
+      </div>
+    </div>
+
+    <div class="platform-col">
+      <h3>Organizational</h3>
+      <p class="col-sub">On the Horizon</p>
+
+      <div class="platform-item">
+        <div class="platform-item-header">
+          <span class="platform-item-name">Kairos <span class="platform-item-greek">καιρός</span></span>
+          <span class="platform-item-status status-next">Horizon</span>
+        </div>
+        <p>AI-assisted pulse intelligence that drops into the communication infrastructure an organization already uses — Teams, Chime, Slack. Reads the aggregate mindset in real time during transformation.</p>
+      </div>
+
+      <div class="platform-item">
+        <div class="platform-item-header">
+          <span class="platform-item-name">Culture Labs + Sprint Teams</span>
+          <span class="platform-item-status status-next">Horizon</span>
+        </div>
+        <p>The human delivery layer. Small, purpose-built teams designed using the Wheel — deployed to do the structural change work that data alone cannot do. Culture Labs address conditions. Sprint Teams implement.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <p class="section-label">What Makes It Different</p>
+  <div class="divider"></div>
+  <h2 class="section-headline">You already use AI.<br><em>You've already felt the ceiling.</em></h2>
+
+  <div class="diff-grid">
+    <div class="diff-card">
+      <div class="diff-num">01</div>
+      <h4>It meets you where you are — before you start</h4>
+      <p>Every conversation with a general AI starts from zero. Notropia Decision Intelligence is designed to meet you where you are before the first word is spoken. Emma enters already knowing how you think.</p>
+    </div>
+    <div class="diff-card">
+      <div class="diff-num">02</div>
+      <h4>It reflects back how you are thinking</h4>
+      <p>A stateless AI can help you think — but it cannot reflect back how you are thinking. Sarah watches across every session. The pattern beneath the decision becomes visible before you act on it.</p>
+    </div>
+    <div class="diff-card">
+      <div class="diff-num">03</div>
+      <h4>Emma shares her perspective — what you do is always yours</h4>
+      <p>Emma will give her perspective when it serves clarity — the way a trusted thinking partner does. What you do with it is always your call. Your authority is never in question.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pullquote-section">
+  <p class="pullquote">
+    "A system that remembers how you decide is more valuable than one that simply helps you decide."
+  </p>
+  <p class="pullquote-attr">Notropia Decision Intelligence — Design Principle</p>
+</section>
+
+<section class="cta-section">
+  <p class="section-label">Currently in Active Pilot</p>
+  <div class="divider" style="margin: 0 auto 2rem;"></div>
+  <h2 class="section-headline">
+    What would your business look like<br>
+    <em>if every decision was built on a problem that was actually real?</em>
+  </h2>
+  <p class="cta-sub">
+    Pilot access is by conversation only. No forms. No funnels. No pitch.
+  </p>
+  <a href="https://calendly.com/notropiarsm/30min" target="_blank" class="hero-cta">Request a Conversation</a>
+</section>
+
+<footer>
+  <div>
+    <p class="footer-brand">Notropia Decision Intelligence</p>
+    <p class="footer-tagline">Notropia will always meet you where you are.</p>
+  </div>
+  <p class="footer-
