@@ -1,2 +1,2 @@
-# Notropia---Site
+# Notropia-Site
 Notropia website
